@@ -38,6 +38,10 @@ contract SimpleVoting {
         return winner;
     }
 
+    function winner() public view returns (string) {
+        return m_options[winnerId()];
+    }
+
 
     /// @notice list of vote options indexed by option id
     string[] public m_options;

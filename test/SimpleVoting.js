@@ -99,4 +99,22 @@ contract('SimpleVotingTest', function(accounts) {
 
         assert.equal(await voting.winnerId(), 0);
     });
+
+
+    it('test winner simple voting for 0', async function() {
+        const voting = await SimpleVoting.new();
+
+        await voting.vote(0);
+
+        assert.equal(await voting.winner(), 'Gagarin');
+    });
+
+    it('test winner simple voting for 1', async function() {
+        const voting = await SimpleVoting.new();
+
+        await voting.vote(1);
+
+        assert.equal(await voting.winner(), 'Leonov');
+    });
+
 });
