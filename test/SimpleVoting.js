@@ -11,4 +11,21 @@ contract('SimpleVotingTest', function(accounts) {
         await SimpleVoting.new();
     });
 
+    it('test voting', async function() {
+        const voting = await SimpleVoting.new();
+
+        await expectThrow(voting.vote(10));
+        await expectThrow(voting.vote(100000000));
+
+        await voting.vote(0);
+        await voting.vote(1);
+        await voting.vote(0);
+
+        await voting.vote(1);
+        await voting.vote(1);
+
+        await expectThrow(voting.vote(10));
+        await expectThrow(voting.vote(100000000));
+    });
+
 });
