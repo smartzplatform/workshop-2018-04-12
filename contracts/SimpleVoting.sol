@@ -2,6 +2,12 @@ pragma solidity 0.4.18;
 
 
 contract SimpleVoting {
+
+    modifier validOption(uint option) {
+        require(option < m_options.length);
+        _;
+    }
+
     function SimpleVoting() public {
         m_options.push('Gagarin');
         m_options.push('Leonov');
@@ -10,9 +16,10 @@ contract SimpleVoting {
     }
 
 
-    function vote(uint option) public {
-        require(option < m_options.length);
-
+    function vote(uint option)
+        public
+        validOption(option)
+    {
         m_votes[option]++;
     }
 
