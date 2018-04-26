@@ -17,15 +17,15 @@ contract('SimpleVotingTest', function(accounts) {
         await expectThrow(voting.vote(10));
         await expectThrow(voting.vote(100000000));
 
-        await voting.vote(0);
-        await voting.vote(1);
-        await voting.vote(0);
+        await voting.vote(0, {from: accounts[0]});
+        await voting.vote(1, {from: accounts[1]});
+        await voting.vote(0, {from: accounts[2]});
 
-        await voting.vote(1);
-        await voting.vote(1);
+        await voting.vote(1, {from: accounts[3]});
+        await voting.vote(1, {from: accounts[4]});
 
-        await expectThrow(voting.vote(10));
-        await expectThrow(voting.vote(100000000));
+        await expectThrow(voting.vote(10, {from: accounts[5]}));
+        await expectThrow(voting.vote(100000000, {from: accounts[5]}));
     });
 
     it('test winnerId simple voting for 0', async function() {
@@ -47,9 +47,9 @@ contract('SimpleVotingTest', function(accounts) {
     it('test winnerId advanced voting for 1', async function() {
         const voting = await SimpleVoting.new();
 
-        await voting.vote(1);
-        await voting.vote(0);
-        await voting.vote(1);
+        await voting.vote(1, {from: accounts[0]});
+        await voting.vote(0, {from: accounts[1]});
+        await voting.vote(1, {from: accounts[2]});
 
         assert.equal(await voting.winnerId(), 1);
     });
@@ -57,9 +57,9 @@ contract('SimpleVotingTest', function(accounts) {
     it('test winnerId advanced voting for 0', async function() {
         const voting = await SimpleVoting.new();
 
-        await voting.vote(0);
-        await voting.vote(1);
-        await voting.vote(0);
+        await voting.vote(0, {from: accounts[0]});
+        await voting.vote(1, {from: accounts[1]});
+        await voting.vote(0, {from: accounts[2]});
 
         assert.equal(await voting.winnerId(), 0);
     });
@@ -67,11 +67,11 @@ contract('SimpleVotingTest', function(accounts) {
     it('test winnerId in case of a tie', async function() {
         const voting = await SimpleVoting.new();
 
-        await voting.vote(2);
-        await voting.vote(0);
-        await voting.vote(1);
-        await voting.vote(0);
-        await voting.vote(1);
+        await voting.vote(2, {from: accounts[0]});
+        await voting.vote(0, {from: accounts[1]});
+        await voting.vote(1, {from: accounts[2]});
+        await voting.vote(0, {from: accounts[3]});
+        await voting.vote(1, {from: accounts[4]});
 
         assert.equal(await voting.winnerId(), 0);
     });
@@ -79,11 +79,11 @@ contract('SimpleVotingTest', function(accounts) {
     it('test winnerId in case of a tie #2', async function() {
         const voting = await SimpleVoting.new();
 
-        await voting.vote(2);
-        await voting.vote(1);
-        await voting.vote(1);
-        await voting.vote(0);
-        await voting.vote(0);
+        await voting.vote(2, {from: accounts[0]});
+        await voting.vote(1, {from: accounts[1]});
+        await voting.vote(1, {from: accounts[2]});
+        await voting.vote(0, {from: accounts[3]});
+        await voting.vote(0, {from: accounts[4]});
 
         assert.equal(await voting.winnerId(), 0);
     });
@@ -91,11 +91,11 @@ contract('SimpleVotingTest', function(accounts) {
     it('test winnerId in case of a tie #3', async function() {
         const voting = await SimpleVoting.new();
 
-        await voting.vote(2);
-        await voting.vote(0);
-        await voting.vote(0);
-        await voting.vote(1);
-        await voting.vote(1);
+        await voting.vote(2, {from: accounts[0]});
+        await voting.vote(0, {from: accounts[1]});
+        await voting.vote(0, {from: accounts[2]});
+        await voting.vote(1, {from: accounts[3]});
+        await voting.vote(1, {from: accounts[4]});
 
         assert.equal(await voting.winnerId(), 0);
     });

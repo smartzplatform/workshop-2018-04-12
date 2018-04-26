@@ -6,6 +6,8 @@ import "zeppelin-solidity/contracts/math/SafeMath.sol";
 contract SimpleVoting {
     using SafeMath for uint;
 
+    event Voted(address indexed sender, uint option);
+
     modifier validOption(uint option) {
         require(option < m_options.length);
         _;
@@ -23,14 +25,30 @@ contract SimpleVoting {
         public
         validOption(option)
     {
+        require(!m_voted[msg.sender]);
+
         m_votes[option]++;
+        m_voted[msg.sender] = true;
+
+        Voted(msg.sender, option);
     }
 
+    /**
+     * @notice Finds id of a winner
+     *
+     * @return id of a winner
+     */
     function winnerId() public view returns (uint) {
+        /*
+         * Options should not
+         * be empty.
+         * Because: ...
+         */
         assert(m_options.length > 0);
 
         uint winner = 0;
         uint winner_votes = m_votes[0];
+        // Finding a winner
         for (uint i = 1; i < m_options.length; i++) {
             if (m_votes[i] > winner_votes) {
                 winner = i;
@@ -52,4 +70,6 @@ contract SimpleVoting {
 
     //// @notice vote count: id => count
     mapping (uint => uint) public m_votes;
+
+    mapping (address => bool) public m_voted;
 }
