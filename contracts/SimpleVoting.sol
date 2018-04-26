@@ -1,7 +1,10 @@
 pragma solidity 0.4.18;
 
+import "zeppelin-solidity/contracts/math/SafeMath.sol";
+
 
 contract SimpleVoting {
+    using SafeMath for uint;
 
     modifier validOption(uint option) {
         require(option < m_options.length);
@@ -38,6 +41,7 @@ contract SimpleVoting {
         return winner;
     }
 
+    /// @notice Gets current winner as a string
     function winner() public view returns (string) {
         return m_options[winnerId()];
     }
