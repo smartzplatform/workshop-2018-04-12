@@ -6,6 +6,14 @@ import "zeppelin-solidity/contracts/math/SafeMath.sol";
 contract SimpleVoting {
     using SafeMath for uint;
 
+    struct VoteInfo {
+        uint timestamp;
+
+        address sender;
+
+        uint option;
+    }
+
     event Voted(address indexed sender, uint option);
 
     modifier validOption(uint option) {
@@ -29,6 +37,12 @@ contract SimpleVoting {
 
         m_votes[option]++;
         m_voted[msg.sender] = true;
+
+        vote_info.length++;
+        VoteInfo storage info = vote_info[vote_info.length - 1];
+        info.timestamp = now;
+        info.sender = msg.sender;
+        info.option = option;
 
         Voted(msg.sender, option);
     }
@@ -72,4 +86,6 @@ contract SimpleVoting {
     mapping (uint => uint) public m_votes;
 
     mapping (address => bool) public m_voted;
+
+    VoteInfo[] public vote_info;
 }

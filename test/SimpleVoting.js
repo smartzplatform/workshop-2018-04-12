@@ -117,4 +117,14 @@ contract('SimpleVotingTest', function(accounts) {
         assert.equal(await voting.winner(), 'Leonov');
     });
 
+    it('test filling vote_info', async function() {
+        const voting = await SimpleVoting.new();
+
+        await voting.vote(1, {from: accounts[2]});
+
+        const info = await voting.vote_info(0);
+        assert.equal(info[1], accounts[2]);
+        assert(info[2].eq(1));
+    });
+
 });
