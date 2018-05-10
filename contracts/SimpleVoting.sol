@@ -38,11 +38,7 @@ contract SimpleVoting {
         m_votes[option]++;
         m_voted[msg.sender] = true;
 
-        vote_info.length++;
-        VoteInfo storage info = vote_info[vote_info.length - 1];
-        info.timestamp = now;
-        info.sender = msg.sender;
-        info.option = option;
+        vote_info.push(VoteInfo({timestamp: now, sender: msg.sender, option: option}));
 
         Voted(msg.sender, option);
     }
