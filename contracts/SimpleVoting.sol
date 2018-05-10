@@ -89,3 +89,4 @@ contract SimpleVoting {
 
     VoteInfo[] public vote_info;
 }
+
