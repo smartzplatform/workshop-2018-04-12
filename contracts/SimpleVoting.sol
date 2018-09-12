@@ -1,4 +1,4 @@
-pragma solidity 0.4.18;
+pragma solidity 0.4.24;
 
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
 
@@ -21,7 +21,7 @@ contract SimpleVoting {
         _;
     }
 
-    function SimpleVoting() public {
+    constructor() public {
         m_options.push('Gagarin');
         m_options.push('Leonov');
         m_options.push('Armstrong');
@@ -40,7 +40,7 @@ contract SimpleVoting {
 
         vote_info.push(VoteInfo({timestamp: now, sender: msg.sender, option: option}));
 
-        Voted(msg.sender, option);
+        emit Voted(msg.sender, option);
     }
 
     /**
